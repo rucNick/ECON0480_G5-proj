@@ -29,7 +29,7 @@ def gdpPlot():
     plt.legend()
     plt.show()
 
-def filterCsv():
+def filterCovid():
     file_path = 'full_data.csv'  # Replace with your actual file path
     data = pd.read_csv(file_path)
 
@@ -42,8 +42,44 @@ def filterCsv():
 
     print(f"Filtered data saved to {filtered_file_path}")
 
+def analyzeCovid():
+    # Define the countries of interest
+    countries_of_interest = ['China', 'United States', 'United Kingdom']
+
+    # Initialize a dictionary to hold the total statistics for each country
+    totals = {country: {'new_cases': 0, 'new_deaths': 0, 'total_cases': 0, 'total_deaths': 0} for country in countries_of_interest}
+
+    # Path to the CSV file
+    file_path = 'filtered_output_file.csv'  # Replace with the path to your CSV file
+
+    # Open the CSV file and iterate through each row
+    with open(file_path, 'r') as file:
+        csv_reader = csv.DictReader(file)
+        for row in csv_reader:
+            country = row['location']
+            if country in countries_of_interest:
+                # Update the totals for the country
+                totals[country]['new_cases'] += float(row['new_cases']) if row['new_cases'] else 0
+                totals[country]['new_deaths'] += float(row['new_deaths']) if row['new_deaths'] else 0
+                totals[country]['total_cases'] += float(row['total_cases']) if row['total_cases'] else 0
+                totals[country]['total_deaths'] += float(row['total_deaths']) if row['total_deaths'] else 0
+
+    # Display the total statistics for each country
+    for country, stats in totals.items():
+        print(f"{country}:")
+        for stat, value in stats.items():
+            print(f"  {stat}: {value}")
+
+    totals_df = pd.DataFrame.from_dict(totals, orient='index')
+
+# Format the dataframe for presentation
+    styled_totals_df = totals_df.style.format("{:,.0f}").background_gradient(cmap='viridis')
+    styled_totals_df.to_html('table.html')
+
+
 def main():
     # filterCsv()
     # gdpPlot()
+    analyzeCovid()
 
 main()
