@@ -3,9 +3,9 @@ import matplotlib.pyplot as plt
 import csv
 
 def gdpPlot():
-    df1 = pd.read_csv('chinagdp.csv')  # Replace with your first CSV file path
-    df2 = pd.read_csv('usgdp.csv')  # Replace with your second CSV file path
-    df3 = pd.read_csv('ukgdp.csv')  # Replace with your third CSV file path
+    df1 = pd.read_csv('data/chinagdp.csv')  # Replace with your first CSV file path
+    df2 = pd.read_csv('data/ukgdp.csv')  # Replace with your second CSV file path
+    df3 = pd.read_csv('data/ukgdp.csv')  # Replace with your third CSV file path
 
     # Make sure the DATE column is parsed as datetime type
     df1['DATE'] = pd.to_datetime(df1['DATE'])
@@ -30,14 +30,14 @@ def gdpPlot():
     plt.show()
 
 def filterCovid():
-    file_path = 'full_data.csv'  # Replace with your actual file path
+    file_path = 'data/full_data.csv'  # Replace with your actual file path
     data = pd.read_csv(file_path)
 
     # Filter the dataframe
     filtered_data = data[data['location'].isin(['China', 'United States', 'United Kingdom'])]
 
     # Save the filtered data to a new CSV file
-    filtered_file_path = 'filtered_output_file.csv'  # Define your desired output file path
+    filtered_file_path = 'data/filtered_output_file.csv'  
     filtered_data.to_csv(filtered_file_path, index=False)
 
     print(f"Filtered data saved to {filtered_file_path}")
@@ -50,7 +50,7 @@ def analyzeCovid():
     totals = {country: {'new_cases': 0, 'new_deaths': 0, 'total_cases': 0, 'total_deaths': 0} for country in countries_of_interest}
 
     # Path to the CSV file
-    file_path = 'filtered_output_file.csv'  # Replace with the path to your CSV file
+    file_path = 'data/filtered_output_file.csv'  # Replace with the path to your CSV file
 
     # Open the CSV file and iterate through each row
     with open(file_path, 'r') as file:
